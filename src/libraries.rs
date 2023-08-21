@@ -9,7 +9,7 @@ pub struct Library {
     pub build_command: Option<String>
 }
 
-#[allow(dead_code)]
+
 impl Library {
     pub fn get_link_string(&self) -> String {
         let name = &self.name;
@@ -38,28 +38,4 @@ impl Library {
         Ok(false)
     }
 
-    pub fn install(&self) -> Result<()> {
-
-        let commands: Vec<String> = self.get_build_commands();
-             
-        let command = commands.join(" && ");
-
-        println!("running: {command}\nawaiting result...");
-
-        let status = Command::new("sh")
-            .arg("-c")
-            .arg(&command)
-            .status();
-
-        match status {
-            Ok(_) => {
-                println!("library {} installed succesfully", self.name); 
-                return Ok(())
-            },
-            Err(err) => {
-                println!("library {} failed to install: {}", self.name, err.to_string());
-                return Err(err.into())
-            }
-        }
-    }
 }
